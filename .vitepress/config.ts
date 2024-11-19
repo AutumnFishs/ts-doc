@@ -29,6 +29,10 @@ export default defineConfig({
           },
         ],
       },
+      {
+        text: "其他",
+        items: [{ text: "其他内容", link: "/other" }],
+      },
     ],
     returnToTopLabel: "回到顶部",
     sidebarMenuLabel: "菜单",
@@ -48,7 +52,7 @@ export default defineConfig({
     ],
     footer: {
       message: "Released under the MIT License.",
-      copyright: "Copyright © 2024-present autumnfishs",
+      copyright: "Copyright © 2024-present autumnfish",
     },
     editLink: {
       pattern: "https://github.com/AutumnFishs/ts-doc/tree/main/:path",
