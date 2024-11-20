@@ -25,3 +25,5 @@ js的模块解析策略现在主要使用两种：ES6 和 CommonJS，ES6是浏�
   - Node.js 默认的模块系统。
   - 支持 `node_modules` 目录和 `package.json` 文件。
   - 使用 `require()` 动态导入模块。
+
+### ts装饰器

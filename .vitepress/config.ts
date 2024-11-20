@@ -17,7 +17,10 @@ export default defineConfig({
       },
       {
         text: "语法",
-        items: [{ text: "类型语法", link: "/grammar/type" }],
+        items: [
+          { text: "类型语法", link: "/grammar/type" },
+          { text: "工具类型", link: "/grammar/tools" },
+        ],
       },
       {
         text: "配置",
@@ -34,6 +37,10 @@ export default defineConfig({
         items: [{ text: "其他内容", link: "/other" }],
       },
     ],
+    outline: {
+      level: "deep",
+      label: "目录",
+    },
     returnToTopLabel: "回到顶部",
     sidebarMenuLabel: "菜单",
     darkModeSwitchLabel: "主题",

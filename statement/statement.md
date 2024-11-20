@@ -132,7 +132,7 @@ ts 中的声明文件，主要是用来描述一个库的类型信息，让 ts �
        - 使用 `import * as namespace from 'module'` 可以导入模块中的所有命名导出内容，并将其封装在一个命名空间对象中。
     :::
 
-7. reference 引入声明文件,这种方式引入声明文件可以直接在当前文件中引入某个模块的类型声明文件，比如在 `env.d.ts` 中引入 `vite/client`：
+7. reference 引入声明文件,这种方式引入声明文件可以直接在当前文件中引入某个模块的类型声明文件，比如在 `global.d.ts` 中引入 `vite/client`：
    ```ts
    /// <reference types="vite/client" />
    ```
@@ -165,3 +165,16 @@ ts 中的声明文件，主要是用来描述一个库的类型信息，让 ts �
    import logo from "./logo.svg";
    ```
    ts 就会自动识别图片的类型，从而在 ts 文件中能够获得类型提示。
+2. 声明文件中对`global`,进行声明扩展,创建 `global.d.ts` 文件：
+   ```ts
+    declare global {
+        interface Window {
+            hello: any;
+            setHello(val: string): void;
+        }
+         
+        function setHello(val: string): void; // 添加全局函数
+    }
+    declare var window: Window;
+   ```
+   然后在 ts 文件中就可以直接使用 `window.hello`、`window.setHello`，ts 就会自动识别类型，从而在 ts 文件中能够获得类型提示。
