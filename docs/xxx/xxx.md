@@ -3,7 +3,7 @@
 1. `docker` 先配置以下镜像源加速，避免拉不下`image` 
    ![docker镜像源配置图片](/docker-engine.png)
 2. `docker` 安装 `ngrok`,`docker pull ngrok/ngrok`,运行镜像`docker run --net=host -it -e NGROK_AUTHTOKEN=yourngrokauthtoken ngrok/ngrok:latest http --url=tightly-gorgeous-asp.ngrok-free.app 8080`,这里我使用的是免费版，域名是自动生成的，然后 `blog` 运行在 `docker80` 端口暴露在 8080，所以这里运行 `ngrok` 向外暴露的端口也要设置为 8080，然后访问`http://tightly-gorgeous-asp.ngrok-free.app`就可以看到博客了（访问速度也就和 `github page`速度差不多，甚至还要慢，不花钱好像有点不太现实）
-   ![ngrok安装](/docker-ngrok.png)
+   ![ngrok安装](/ngrok-docker.png)
 
 
    
