@@ -14,6 +14,7 @@
   "author": "autumnfishs",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^22.9.1",
     "vitepress": "^1.5.0"
   },
   "dependencies": {

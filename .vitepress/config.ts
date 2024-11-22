@@ -1,7 +1,8 @@
 import { defineConfig } from "vitepress";
-
-// https://vitepress.dev/reference/site-config
+import { basename } from "node:path";
+const GITHUB_REPOSITORY = basename(process.env.GITHUB_REPOSITORY || "");
 export default defineConfig({
+  base: GITHUB_REPOSITORY ? `/${GITHUB_REPOSITORY}/` : "/",
   title: "TypeScript笔记",
   description: "回顾以往使用ts的粗糙，痛定思痛决定回炉重造一下",
   themeConfig: {
