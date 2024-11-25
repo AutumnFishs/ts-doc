@@ -222,4 +222,115 @@ type ReturnTypeT = MyReturnType<typeof Fn> // string | number
 ```
 
 ## `InstanceType<type>`
+1. `InstanceType`用于获取构造函数类型的实例类型，例如：
+``` ts
+class User {
+  name: string;
+  age: number;
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+}
+type InstanceTypeUser = InstanceType<typeof User> // User
+```
+2. `InstanceType`工具类型的实现：
+``` ts
+type MyInstanceTypeUser<T extends abstract new (...args: any) => any> =
+  T extends abstract new (...args: any) => infer R ? R : any;
+type InstanceTypeUser = MyInstanceTypeUser<typeof User>; // User
+```
+## `NoInfer<Type>`
+1. `NoInfer`用于防止类型被推断，例如：
+``` ts
+function Fn<T extends string>(arr: T[],values:NoInfer<T>){}
+Fn(['a','b','c'],'a') // ok
+Fn(['a','b','c'],'d') // error
+```
+2. `NoInfer`工具类型的实现：
+``` ts
+type MyNoInfer<T> =[T][T extends any ? 0 : never]//条件始终为真即得到的类型为[T][0],即T;这里是利用了数组的索引类型阻断类型推断
 
+function Fn<T extends string>(arr: T[],values:MyNoInfer<T>){}
+Fn(['a','b','c'],'a') // ok
+Fn(['a','b','c'],'d') // error
+```
+**阻断类型推断的方式有：**
+1. 把当前类型作为数组的第一项再获取数组的第一项类型
+2. 通过将类型作为函数的参数类型，再通过函数调用获取参数类型
+   
+## `ThisParameterType<Type>`
+1. `ThisParameterType`用于获取函数类型的`this`参数类型，如果没有`this`则推断为`unknown`,例如：
+``` ts
+const obj = {
+  name: "obj",
+  fn: function (this: any) {
+    console.log(this.name);
+    console.log(this);
+  },
+};
+type ThisParameterTypeFn = ThisParameterType<typeof obj.fn> // any
+function Fn(this: string, params: string): string {
+  return this + params;
+}
+type ThisParameterTypeFn2 = ThisParameterType<typeof Fn> // string
+```
+2. `ThisParameterType`工具类型的实现：
+``` ts
+type MyThisParameterType<T extends Function> = T extends (this: infer U, ...args: any) => any ? U : unknown;
+type ThisParameterTypeFn = MyThisParameterType<typeof Fn> // string
+```
+`(--strict)`严格模式会启用`(--noImplicitThis)`,`this`作为隐式参数类型会被推断为`unknown`
+
+## `OmitThisParameter<Type>`
+1. `OmitThisParameter`用于移除函数类型的`this`参数类型，例如：
+``` ts 
+const obj = {
+  name: "obj",
+  fn: function (this: any) {
+    console.log(this.name);
+    console.log(this);
+  },
+};
+type OmitThisParameterFn = OmitThisParameter<typeof obj.fn> // (this: any) => void
+function Fn(this: string, params: string): string {
+  return this + params;
+}
+type OmitThisParameterFn2 = OmitThisParameter<typeof Fn> // (params: string) => string
+```
+2. `OmitThisParameter`工具类型的实现：
+``` ts
+type MyOmitThisParameter<T> = T extends Function
+  ? T extends (this: any, ...args: infer R) => infer S
+    ? (...args: R) => S
+    : never
+  : T;
+type OmitThisParameterFn3 = MyOmitThisParameter<typeof obj.fn>; // (this: any) => void
+type OmitThisParameterFn4 = MyOmitThisParameter<typeof Fn>; // (params: string) => string
+```
+
+## `ThisType<Type>`
+1. `ThisType`用于为对象字面量类型添加`this`类型，例如[官网示例](https://ts.nodejs.cn/docs/handbook/utility-types.html#thistypetype):
+``` ts
+type ObjectDescriptor<D, M> = {
+  data?: D;
+  methods?: M & ThisType<D & M>; // Type of 'this' in methods is D & M
+};
+ 
+function makeObject<D, M>(desc: ObjectDescriptor<D, M>): D & M {
+  let data: object = desc.data || {};
+  let methods: object = desc.methods || {};
+  return { ...data, ...methods } as D & M;
+}
+ 
+let obj = makeObject({
+  data: { x: 0, y: 0 },
+  methods: {
+    moveBy(dx: number, dy: number) {
+      this.x += dx; // Strongly typed this
+      this.y += dy; // Strongly typed this
+    },
+  },
+});
+```
+`ThisType`理解起来比较吃力，可以参考这篇文章[TS-函数ThisType使用场景](https://juejin.cn/post/7107910000210608142?searchId=20241125112304A60CDA9580C0F0144E87)
