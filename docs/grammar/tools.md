@@ -333,4 +333,4 @@ let obj = makeObject({
   },
 });
 ```
-`ThisType`理解起来比较吃力，可以参考这篇文章[TS-函数ThisType使用场景](https://juejin.cn/post/7107910000210608142?searchId=20241125112304A60CDA9580C0F0144E87)
+`ThisType`使用可以参考这篇文章[TS-函数ThisType使用场景](https://juejin.cn/post/7107910000210608142?searchId=20241125112304A60CDA9580C0F0144E87)
